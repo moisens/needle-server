@@ -1,16 +1,21 @@
 import { Request, Response, NextFunction } from "express";
 
-//interface StatusError extends Error {
-//  statusCode: string;
-//  code: number | string;
-//  item: number | string;
-//  value: number | string;
-//  errors: string;
-//  keyValue: number | string
-//}
+interface StatusError extends Error {
+  statusCode: number;
+  code: number;
+  value: number;
+  errors: number;
+  keyValue: number;
+}
+
+interface StatusMessage {
+  message: string;
+}
+
+
 
 import { StatusCodes } from "http-status-codes";
-const errorHandlerMiddleware = (err, req: Request, res: Response, next: NextFunction) => {
+const errorHandlerMiddleware = (err: StatusError, req: Request, res: Response, next: NextFunction) => {
   let customError = {
     // set default
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
@@ -18,7 +23,7 @@ const errorHandlerMiddleware = (err, req: Request, res: Response, next: NextFunc
   };
   if (err.name === "ValidationError") {
     customError.msg = Object.values(err.errors)
-      .map((item) => item.message)
+      .map((item: StatusMessage) => item.message)
       .join(",");
     customError.statusCode = 400;
   }
