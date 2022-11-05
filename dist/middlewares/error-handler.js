@@ -1,11 +1,3 @@
-//interface StatusError extends Error {
-//  statusCode: string;
-//  code: number | string;
-//  item: number | string;
-//  value: number | string;
-//  errors: string;
-//  keyValue: number | string
-//}
 import { StatusCodes } from "http-status-codes";
 const errorHandlerMiddleware = (err, req, res, next) => {
     let customError = {
