@@ -1,16 +1,8 @@
-import User from "../models/Users";
+import User from "../models/Users.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index";
 import { Request, Response } from "express";
 
-
-const createUser = async (req: Request, res: Response) => {
-  //const user = await User.create(req.body);
-  //res.status(StatusCodes.CREATED).json({ user });
-  console.log("create user");
-  
-
-}
 
 const getAllUsers = async (req: Request, res: Response) => {
   console.log("getting all users!");
@@ -35,7 +27,6 @@ const deleteUser = async (req: Request, res: Response) => {
 
 
 export {
-  createUser,
   getAllUsers,
   getSingleUser,
   updateUser,
