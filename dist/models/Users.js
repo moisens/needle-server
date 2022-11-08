@@ -23,7 +23,12 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide a user password"],
         minLength: [6, "User password must have minimum 6 characters"]
-    }
+    },
+    role: {
+        type: String,
+        enum: ["admin", "user"],
+        default: "user",
+    },
 }, { timestamps: true });
 const User = mongoose.model("User", UserSchema);
 export default User;

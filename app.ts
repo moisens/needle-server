@@ -7,9 +7,9 @@ import express, { Request, Response, Express } from "express";
 const app: Express = express();//No need to type it but if we want to be explicit, we can
 
 import connectDB from "./db/connect.js"// /!\Why this behaviour?????
-import userRouter from "./routes/usersRoutes"
-import notFoundMiddleware from "./middlewares/not-found";
-import errorHandlerMiddleware from "./middlewares/error-handler";
+import userRouter from "./routes/usersRoutes.js"
+import notFoundMiddleware from "./middlewares/not-found.js";
+import errorHandlerMiddleware from "./middlewares/error-handler.js";
 
 app.get('/', (req: Request, res: Response) => {
   res.send("needle Api!!!!")
@@ -26,7 +26,7 @@ const start = async () => {
     app.listen(port,() => console.log(`✅ app started on port ${port}✨`));
   } catch (error) {
     if (error instanceof Error) {
-      console.log(`❌ ${error}`);
+      console.log(`❌ ${error}💥`);
     }
   }
 }
