@@ -4,6 +4,7 @@ import User from "../models/Users.js";
 import { UserInput } from "../models/Users.js"
 import BadRequestError from "../errors/bad-request.js"
 import createTokenuser from "../utils/createTokenUser.js";
+import { attachCookiesToResponse } from "../utils/jwt.js";
 
 
 const register = async (req: Request<UserInput>, res: Response) => {
@@ -18,6 +19,7 @@ const register = async (req: Request<UserInput>, res: Response) => {
 
   const user = await User.create({ name, lastname, email, password, role })
   const tokenUser = createTokenuser(user)
+  attachCookiesToResponse({ res, user: tokenUser })
   res.status(StatusCodes.CREATED).json({ user: tokenUser });
 }
 

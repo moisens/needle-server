@@ -3,6 +3,7 @@ dotenv.config();
 import "express-async-errors";
 import express from "express";
 const app = express(); //No need to type it but if we want to be explicit, we can
+import morgan from "morgan";
 import connectDB from "./db/connect.js"; // /!\Why this behaviour?????
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/usersRoutes.js";
@@ -11,6 +12,7 @@ import errorHandlerMiddleware from "./middlewares/error-handler.js";
 app.get('/', (req, res) => {
     res.send("needle Api!!!!");
 });
+app.use(morgan("tiny"));
 app.use(express.json());
 app.use("/api/v1/auth", authRouter.router);
 app.use("/api/v1/users", userRouter);
