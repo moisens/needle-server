@@ -6,7 +6,8 @@ import express, { Request, Response, Express } from "express";
 
 const app: Express = express();//No need to type it but if we want to be explicit, we can
 
-import morgan from "morgan"
+import morgan from "morgan";
+import cookieParser from "cookie-parser"
 import connectDB from "./db/connect.js";// /!\Why this behaviour?????
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/usersRoutes.js";
@@ -19,6 +20,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use(morgan("tiny"))
 app.use(express.json())
+app.use(cookieParser(process.env.JWT_SECRET))
 
 
 app.use("/api/v1/auth", authRouter.router);
