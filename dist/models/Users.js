@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import validator from "validator";
+import bcrypt from "bcryptjs";
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -16,8 +18,12 @@ const UserSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique: true,
         required: [true, "Provide an email"],
+        validate: {
+            validator: validator.isEmail,
+            message: "Please provide a valide email",
+            unique: true,
+        },
     },
     password: {
         type: String,
@@ -30,5 +36,17 @@ const UserSchema = new mongoose.Schema({
         default: "user",
     },
 }, { timestamps: true });
+UserSchema.pre("save", async function () {
+    if (!this.isModified("password"))
+        return;
+    const salt = await bcrypt.genSalt(10);
+    const user = this;
+    user.password = await bcrypt.hash(user.password, salt);
+});
+UserSchema.methods.comparePassword = async function (passwordToCompare) {
+    const user = this;
+    const isMatch = await bcrypt.compare(passwordToCompare, user.password);
+    return isMatch;
+};
 const User = mongoose.model("User", UserSchema);
 export default User;

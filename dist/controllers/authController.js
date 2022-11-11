@@ -24,7 +24,7 @@ const login = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user)
         throw new UnauthenticatedError("Invalid credentials!");
-    const isPasswordValid = await User.comparePassword(password);
+    const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid)
         throw new UnauthenticatedError("Invalid credentials");
     const tokenUser = createTokenuser(user);
