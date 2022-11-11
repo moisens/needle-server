@@ -17,7 +17,6 @@ const register = async (req, res) => {
     res.status(StatusCodes.CREATED).json({ user: tokenUser });
 };
 const login = async (req, res) => {
-    console.log("login");
 };
 export default {
     register,

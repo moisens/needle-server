@@ -24,7 +24,7 @@ const register = async (req: Request<UserInput>, res: Response) => {
 }
 
 const login = async (req: Request, res: Response) => {
-  console.log("login");
+  
   
 }
 
