@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import validator from "validator";
+import bcrypt from "bcryptjs";
 
 
 export interface UserInput {
@@ -12,7 +14,7 @@ export interface UserInput {
 export interface UserDocument extends UserInput, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
-  //comparePassword(candidatePassword: string): Promise<Boolean>;
+  comparePassword(passwordToCompare: string): Promise<Boolean>;
 }
 
 const UserSchema = new mongoose.Schema({
@@ -32,8 +34,13 @@ const UserSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: true,
     required: [true, "Provide an email"],
+    validate: {
+      validator: validator.isEmail,
+      message: "Please provide a valide email",
+      unique: true,
+    },
+    
   },
   password: {
     type: String,
@@ -45,7 +52,22 @@ const UserSchema = new mongoose.Schema({
     enum: ["admin", "user"],
     default: "user",
   },
-}, {timestamps: true})
+}, {timestamps: true});
+
+
+UserSchema.pre("save", async function() {
+  if (!this.isModified("password")) return;
+  const salt = await bcrypt.genSalt(10);
+  const user = this as UserDocument;
+  user.password = await bcrypt.hash(user.password, salt);
+
+})
+
+UserSchema.methods.comparePassword = async function(passwordToCompare: string): Promise<boolean> {
+  const user = this as UserDocument;
+  const isMatch = await bcrypt.compare(passwordToCompare, user.password);
+  return isMatch;
+}
 
 const User = mongoose.model<UserDocument>("User",UserSchema)
 
