@@ -10,12 +10,13 @@ import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/usersRoutes.js";
 import notFoundMiddleware from "./middlewares/not-found.js";
 import errorHandlerMiddleware from "./middlewares/error-handler.js";
-app.get('/', (req, res) => {
-    res.send("needle Api!!!!");
-});
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
+app.get('/api/v1', (req, res) => {
+    console.log(req.cookies);
+    res.send("needle Api!!!!");
+});
 app.use("/api/v1/auth", authRouter.router);
 app.use("/api/v1/users", userRouter);
 app.use(notFoundMiddleware);
