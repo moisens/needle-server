@@ -40,9 +40,18 @@ const login = async (req: Request, res: Response) => {
   
 }
 
+const logout = async (req:Request, res: Response) => {
+  res.cookie("token", "logout", {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  res.status(StatusCodes.OK).json({ msg: "you've just logged out!" })
+}
+
 
 
 export default {
   register,
-  login
+  login,
+  logout
 }
