@@ -6,6 +6,7 @@ const createTokenuser = (user: UserDocument) => {
     name: user.name,
     userId: new mongoose.Types.ObjectId(),
     role: user.role,
+    email: user.email,
   };
 };
 

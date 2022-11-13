@@ -10,7 +10,7 @@ const register = async (req, res) => {
     if (emailAllReadyExist)
         throw new BadRequestError("Email in use! Try an other one.");
     //The first user to register has the Admin role
-    const isFirstRegistered = await User.countDocuments({}) === 0;
+    const isFirstRegistered = (await User.countDocuments({})) === 0;
     const role = isFirstRegistered ? "admin" : "user";
     const user = await User.create({ name, lastname, email, password, role });
     const tokenUser = createTokenuser(user);
@@ -41,5 +41,5 @@ const logout = async (req, res) => {
 export default {
     register,
     login,
-    logout
+    logout,
 };

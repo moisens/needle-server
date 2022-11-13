@@ -7,6 +7,7 @@ export interface TokenUser {
   name: string;
   userId: mongoose.Types.ObjectId;
   role: string;
+  email: string;
 }
 
 const jwt = jsonwebtoken;
