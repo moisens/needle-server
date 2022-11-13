@@ -22,7 +22,7 @@ app.use(cookieParser(process.env.JWT_SECRET))
 
 
 app.get('/api/v1', (req: Request, res: Response) => {
-  console.log(req.cookies);
+  console.log(req.signedCookies);
   
   res.send("needle Api!!!!")
 })
