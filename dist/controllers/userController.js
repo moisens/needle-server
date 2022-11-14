@@ -1,6 +1,6 @@
-import User from "../models/Users.js";
 import { StatusCodes } from "http-status-codes";
-import { NotFoundError } from "../errors/index.js";
+import { BadRequestError, NotFoundError } from "../errors/index.js";
+import User from "../models/Users.js";
 const getAllUsers = async (req, res) => {
     const users = await User.find({ role: "user" }).select("-password");
     res.status(StatusCodes.OK).json({ users });
@@ -14,7 +14,16 @@ const getSingleUser = async (req, res) => {
     res.status(StatusCodes.OK).json({ user });
 };
 const updateUser = async (req, res) => {
-    console.log("updating user!");
+    const { name, lastname, email } = req.body;
+    if (!name || !lastname || !email)
+        throw new BadRequestError("Invalid credentials!");
+    const user = await User.findOneAndUpdate({ _id: req.params.userId }, { name, lastname, email }, {
+        new: true,
+        runValidators: true,
+    });
+    //const tokenUser = createTokenuser(user);
+    //attachCookiesToResponse({ res, user: tokenUser })
+    res.status(StatusCodes.OK).json({ user });
 };
 const updateUserPassword = async (req, res) => {
     console.log("updating user password!");
