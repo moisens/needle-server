@@ -14,6 +14,8 @@ export interface UserInput {
 export interface UserDocument extends UserInput, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
+  id: String;
+  userId: String;
   comparePassword(passwordToCompare: string): Promise<Boolean>;
 }
 

@@ -13,8 +13,11 @@ const getAllUsers = async (req: Request, res: Response) => {
 }
 
 const getSingleUser = async (req: Request<UserDocument>, res: Response) => {
-  console.log("getting single user");
-  
+  const { id: userId } = req.params;
+  const user = await User.findOne({ _id: userId }).select("-password");
+  if (!user) throw new NotFoundError(`There is no user with id: ${userId}`)
+  //Add check permission function!!!!
+  res.status(StatusCodes.OK).json({ user })
 }
 
 const updateUser = async (req: Request<UserDocument>, res: Response) => {
