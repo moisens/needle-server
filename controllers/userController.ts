@@ -7,11 +7,17 @@ import checkPermission from "../utils/checkPermissions.js";
 import createTokenuser from "../utils/createTokenUser.js"; 
 import { attachCookiesToResponse } from "../utils/jwt.js";
 
+export interface UpdateUser {
+  userId: mongoose.Types.ObjectId;
+  name: string;
+  lastname: string;
+  email: string;
+}
 
-
-
-interface IUpdateUser extends UserDocument {
-  user: UserInput
+interface IUpdateuser extends UserInput {
+  user: {
+    userId: mongoose.Types.ObjectId;
+  }
 }
 
 
@@ -29,17 +35,13 @@ const getSingleUser = async (req: Request<UserDocument>, res: Response) => {
   res.status(StatusCodes.OK).json({ user })
 }
 
-const updateUser = async (req: Request<UserDocument>, res: Response) => {
-  const { name, lastname, email }: UserDocument = req.body;
-  if (!name || !lastname || !email) throw new BadRequestError("Invalid credentials!")
-  const user = await User.findOneAndUpdate({ _id: req.params.userId }, { name, lastname, email }, {
-    new: true,
-    runValidators: true,
-  })!
-
-  //const tokenUser = createTokenuser(user);
-  //attachCookiesToResponse({ res, user: tokenUser })
-  res.status(StatusCodes.OK).json({ user })
+const updateUser = async (req: Request<IUpdateuser>, res: Response) => {
+  const { name, lastname, email }: IUpdateuser = req.body;
+  const user = await User.findOneAndUpdate({ _id: req.user.userId })!
+  if (!name || !lastname || !email) throw new BadRequestError("Please provide all values!")
+  const tokenUser = createTokenuser(user!);
+  attachCookiesToResponse({ res, user: tokenUser })
+  res.status(StatusCodes.OK).json({ user: tokenUser })
 }
 
 
