@@ -6,6 +6,7 @@ export interface UserInput {
   email: string;
   password: string;
   role: string;
+  avatar: string;
 }
 
 export interface UserId extends UserInput {
