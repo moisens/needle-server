@@ -45,18 +45,12 @@ const UserSchema = new mongoose.Schema({
 UserSchema.pre("save", async function() {
   if (!this.isModified("password")) return;
   const salt = await bcrypt.genSalt(10);
-  const user = this as UserDocument;
+  const user = this;
   user.password = await bcrypt.hash(user.password, salt);
 
 })
 
-UserSchema.methods.comparePassword = async function(passwordToCompare: string): Promise<boolean> {
-  const user = this as UserDocument;
-  const isMatch = await bcrypt.compare(passwordToCompare, user.password);
-  return isMatch;
-}
-
-const User = mongoose.model("User",UserSchema)
+const User = mongoose.model("User",UserSchema);
 
 export default User;
 
