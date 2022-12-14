@@ -1,9 +1,8 @@
-import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import UnauthenticatedError from "../errors/unauthenticated.js";
 
 
-const auth = (req: Request, res: Response, next: NextFunction) => {
+const auth = (req, res, next) => {
   const authHeaders = req.headers.authorization!;
   if (!authHeaders || !authHeaders.startsWith("Bearer")) throw new UnauthenticatedError("Autentication invalid!");
   const token = authHeaders.split(" ")[1]
