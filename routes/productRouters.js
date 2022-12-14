@@ -6,7 +6,7 @@ import {
   getSingleProduct,
   updateProduct,
   deleteProduct,
-} from "../controllers/productController";
+} from "../controllers/productController.js";
 
 const router = express();
 
@@ -14,7 +14,7 @@ router.route("/").post(createProduct).get(getAllProducts);
 router
   .route("/:id")
   .get(getSingleProduct)
-  .path(updateProduct)
+  .patch(updateProduct)
   .delete(deleteProduct);
 
 export default router;

@@ -11,7 +11,7 @@ import connectDB from "./db/connect.js";
 import notFoundMiddleware from "./middlewares/not-found.js";
 import errorHandlerMiddleware from "./middlewares/error-handler.js";
 
-
+import productRoutes from "./routes/productRouters.js";
 
 app.use(morgan("tiny"))
 app.use(express.json())
@@ -22,11 +22,13 @@ app.get('/api/v1', (req, res) => {
   res.send("needle Api!!!!")
 })
 
+app.use("/api/v1/products", productRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
-const port = 5000;
 
+
+const port = 5000;
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
