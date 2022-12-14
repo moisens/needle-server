@@ -3,21 +3,6 @@ import validator from "validator";
 import bcrypt from "bcryptjs";
 
 
-export interface UserInput {
-  name: string,
-  lastname: string,
-  email: string,
-  password: string,
-  role: string
-}
-
-export interface UserDocument extends UserInput, mongoose.Document {
-  createdAt: Date;
-  updatedAt: Date;
-  id: String;
-  userId: String;
-  comparePassword(passwordToCompare: string): Promise<Boolean>;
-}
 
 const UserSchema = new mongoose.Schema({
   name : {
@@ -71,7 +56,7 @@ UserSchema.methods.comparePassword = async function(passwordToCompare: string): 
   return isMatch;
 }
 
-const User = mongoose.model<UserDocument>("User",UserSchema)
+const User = mongoose.model("User",UserSchema)
 
 export default User;
 

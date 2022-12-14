@@ -1,14 +1,16 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import User from "../models/Users.js";
-import { UserInput } from "../models/Users.js";
 import BadRequestError from "../errors/bad-request.js";
 import UnauthenticatedError from "../errors/unauthenticated.js";
 import createTokenuser from "../utils/createTokenUser.js";
 import { attachCookiesToResponse } from "../utils/jwt.js";
 
-const register = async (req: Request<UserInput>, res: Response) => {
-  const { email, password, name, lastname }: UserInput = req.body;
+
+
+
+const register = async (req, res) => {
+  const { email, password, name, lastname } = req.body;
 
   const emailAllReadyExist = await User.findOne({ email });
   if (emailAllReadyExist)
@@ -24,8 +26,8 @@ const register = async (req: Request<UserInput>, res: Response) => {
   res.status(StatusCodes.CREATED).json({ user: tokenUser });
 };
 
-const login = async (req: Request, res: Response) => {
-  const { email, password }: UserInput = req.body;
+const login = async (req, res) => {
+  const { email, password } = req.body;
   if (!email || !password)
     throw new BadRequestError("Please provide an email and a password!");
 
@@ -40,7 +42,7 @@ const login = async (req: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ user: tokenUser });
 };
 
-const logout = async (req: Request, res: Response) => {
+const logout = async (req, res) => {
   res.cookie("token", "logout", {
     httpOnly: true,
     expires: new Date(Date.now()),
