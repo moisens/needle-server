@@ -13,6 +13,20 @@ const ProductSchema = new mongoose.Schema(
       default: "white",
       required: true,
     },
+    price: {
+      type: Number,
+      required: [true, "please provide a price"],
+      default: 0,
+    },
+    description: {
+      type: String,
+      required: [true, "Please provide a description"],
+      maxLength: [1500, "Description can't be more than 1500 characters"],
+    },
+    clothesmaterials: {
+      type: [String],
+      required: [true, "Please provide a clothe material"],
+    },
     image: {
       type: [String],
       required: [true, "Please, provide at least one image"],
