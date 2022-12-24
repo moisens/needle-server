@@ -5,7 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "server": "nodemon server"
+    "server": "nodemon server",
+    "start": "npm run server"
   },
   "repository": {
     "type": "git",
