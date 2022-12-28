@@ -13,7 +13,9 @@ import errorHandlerMiddleware from "./middlewares/error-handler.js";
 
 import productRoutes from "./routes/productRouters.js";
 
-app.use(morgan("tiny"))
+if (process.env.NODE_ENV !== "production") {
+  app.use(morgan("dev"));
+}
 app.use(express.json())
 app.use(cookieParser(process.env.JWT_SECRET))
 
