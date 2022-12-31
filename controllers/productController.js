@@ -8,8 +8,40 @@ const createProduct = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-  const products = await Product.find({});
-  res.status(StatusCodes.OK).json({ products });
+  const queryObject = {};
+  const { tailorname, price, maincategories, subcategories, size, featured } =
+    req.query;
+
+  if (maincategories) {
+    queryObject.maincategories = maincategories;
+  }
+  if (subcategories && subcategories !== "all") {
+    queryObject.subcategories = subcategories;
+  }
+  if (tailorname) {
+    queryObject.tailorname = tailorname;
+  }
+  if (price) {
+    queryObject.price = price;
+  }
+  if (size) {
+    queryObject.size = size;
+  }
+  if (featured) {
+    queryObject.featured = featured;
+  }
+
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 9;
+  const skip = (page - 1) * limit;
+  let result = Product.find(queryObject);
+  result = result.skip(skip).limit(limit);
+
+  const products = await result;
+  const totalProduct = await Product.countDocuments(queryObject);
+  const numOfPages = Math.ceil(totalProduct / limit);
+
+  res.status(StatusCodes.OK).json({ products, totalProduct, numOfPages });
 };
 
 const getSingleProduct = async (req, res) => {
