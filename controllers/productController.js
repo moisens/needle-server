@@ -9,11 +9,21 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   const queryObject = {};
-  const { tailorname, price, maincategories, subcategories, size, featured } =
-    req.query;
+  const {
+    tailorname,
+    price,
+    maincategories,
+    categories,
+    subcategories,
+    size,
+    featured,
+  } = req.query;
 
   if (maincategories) {
     queryObject.maincategories = maincategories;
+  }
+  if (categories) {
+    queryObject.categories = categories;
   }
   if (subcategories && subcategories !== "all") {
     queryObject.subcategories = subcategories;
