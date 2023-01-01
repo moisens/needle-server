@@ -36,6 +36,11 @@ const ProductSchema = new mongoose.Schema(
       required: [true, "Please provide a main category"],
       enum: ["women", "men"],
     },
+    categories: {
+      type: String,
+      required: [true, "Please provide a category"],
+      enum: ["clothes", "shoes"]
+    },
     subcategories: {
       type: String,
       required: [true, "Please provide a sub category"],
